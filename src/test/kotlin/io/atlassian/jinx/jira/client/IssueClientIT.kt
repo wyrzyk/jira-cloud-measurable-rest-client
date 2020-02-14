@@ -1,11 +1,10 @@
-package io.atlassian.jinx.generator
+package io.atlassian.jinx.jira.client
 
 import com.atlassian.performance.tools.jiraactions.api.ActionMetric
 import com.atlassian.performance.tools.jiraactions.api.ActionResult
 import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.measure.output.CollectionActionMetricOutput
 import com.atlassian.performance.tools.jiraactions.api.w3c.DisabledW3cPerformanceTimeline
-import io.atlassian.jinx.jira.client.JiraClient
 import io.atlassian.jinx.jira.client.model.IssueType
 import io.atlassian.jinx.jira.client.model.Project
 import io.atlassian.jinx.jira.client.model.request.IssueRequest
