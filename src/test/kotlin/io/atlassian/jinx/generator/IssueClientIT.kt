@@ -6,9 +6,10 @@ import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.measure.output.CollectionActionMetricOutput
 import com.atlassian.performance.tools.jiraactions.api.w3c.DisabledW3cPerformanceTimeline
 import io.atlassian.jinx.jira.client.JiraClient
-import io.atlassian.jinx.jira.client.model.Issue
 import io.atlassian.jinx.jira.client.model.IssueType
 import io.atlassian.jinx.jira.client.model.Project
+import io.atlassian.jinx.jira.client.model.request.IssueRequest
+import io.atlassian.jinx.jira.client.model.request.JqlRequest
 import org.apache.http.HttpHeaders
 import org.apache.http.impl.client.HttpClients
 import org.apache.http.message.BasicHeader
@@ -44,7 +45,7 @@ class IssueClientIT {
 
     @Test
     fun shouldCreateIssues() {
-        val issue = Issue(
+        val issue = IssueRequest(
             summary = "test-" + UUID.randomUUID().toString(),
             description = "test description",
             project = Project("TES"),
@@ -70,6 +71,34 @@ class IssueClientIT {
         Assertions.assertThat(actionMetrics).hasSize(1)
         Assertions.assertThat(actionMetrics.first().result).isEqualTo(ActionResult.OK)
         Assertions.assertThat(actionMetrics.first().label).isEqualTo("CREATE_ISSUE_REST")
+    }
+
+    @Test
+    fun shouldSearchForIssues() {
+        val jqlRequest = JqlRequest(
+            jql = "ORDER BY id DESC"
+        )
+        val actionMetrics = mutableListOf<ActionMetric>()
+        val actionMeter = ActionMeter(
+            virtualUser = UUID.randomUUID(),
+            clock = Clock.systemUTC(),
+            w3cPerformanceTimeline = DisabledW3cPerformanceTimeline(),
+            output = CollectionActionMetricOutput(
+                actionMetrics
+            )
+        )
+        val jiraClient = JiraClient(
+            httpClient,
+            jiraUri,
+            actionMeter
+        )
+
+        val response = jiraClient.search.find(jqlRequest)
+
+        Assertions.assertThat(actionMetrics).hasSize(1)
+        Assertions.assertThat(actionMetrics.first().result).isEqualTo(ActionResult.OK)
+        Assertions.assertThat(actionMetrics.first().label).isEqualTo("SEARCH_REST")
+        Assertions.assertThat(response.total).isGreaterThan(0)
     }
 
     private fun getJiraAuthHeader(

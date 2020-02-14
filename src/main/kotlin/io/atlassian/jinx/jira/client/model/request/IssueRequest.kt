@@ -1,10 +1,12 @@
-package io.atlassian.jinx.jira.client.model
+package io.atlassian.jinx.jira.client.model.request
 
+import io.atlassian.jinx.jira.client.model.IssueType
+import io.atlassian.jinx.jira.client.model.Project
 import javax.json.Json
 import javax.json.JsonObject
 import javax.json.JsonObjectBuilder
 
-data class Issue(
+data class IssueRequest(
     val summary: String,
     val description: String,
     val project: Project,
