@@ -4,6 +4,7 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 plugins {
     kotlin("jvm").version("1.3.41")
     `java-library`
+    id("com.atlassian.performance.tools.gradle-release").version("0.5.0")
 }
 
 repositories {
@@ -12,6 +13,7 @@ repositories {
 
 dependencies {
     api("javax.json:javax.json-api:[1.0.0,2.0.0)")
+    api("com.atlassian.performance.tools:jira-actions:[3.10.1,4.0.0)")
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.glassfish:javax.json:1.1.4")

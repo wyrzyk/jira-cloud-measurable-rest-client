@@ -1,5 +1,6 @@
 package io.atlassian.jinx.jira.client
 
+import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import io.atlassian.jinx.jira.client.model.ProjectIssueType
 import io.atlassian.jinx.jira.client.resources.IssueResource
 import org.apache.http.client.HttpClient
@@ -8,11 +9,13 @@ import java.net.URI
 
 class JiraClient(
     private val httpClient: HttpClient,
-    private val jiraUri: URI
+    private val jiraUri: URI,
+    actionMeter: ActionMeter
 ) {
     val issue = IssueResource(
         httpClient,
-        jiraUri
+        jiraUri,
+        actionMeter
     )
 
     private fun fetchProjectIssueTypes(): Set<ProjectIssueType> {
